@@ -1,0 +1,1552 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % Define a versão do pgfplots
+\usepackage{tikz}
+\usepackage[margin=2cm]{geometry}
+\usepackage{url}
+\usepackage{hyperref}
+
+\title{Cálculo I}
+\author{Kayky Moreira Praxedes}
+\date{Janeiro 2026}
+
+\begin{document}
+	
+	\maketitle
+	
+	\section{Limites}
+	
+	\subsection{Limite em um ponto}
+	
+	$f(a)$ indica o valor da função $f(x)$ quando $x = a$. $\displaystyle \lim_{x \to a} f(x)$ vê a tendência da função quando $x$ se aproxima de $a$.
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width= 10cm,
+				height= 7 cm,
+				axis lines = center,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				ymax = 8,
+				domain = -5:5,
+				samples = 200,
+				xtick = {10},
+				ytick = {10},
+				]
+				
+				\addplot[
+				color = red,
+				thick,
+				smooth
+				] {1/abs(x)};
+				
+				\node [red] at (axis cs:1.5,5) {$f(x) = \dfrac{1}{|x|}$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	$f(0)$ não existe.	$\displaystyle \lim_{x \to 0} f(x) = \infty$ (quando $x$ se aproxima de $0$, $y$ tende ao infinito).
+	\subsubsection*{Limites laterais:}
+	Para um limite existir, os limites laterais devem ser iguais (o mesmo valor se aproximando pela esquerda e direita):
+	\[
+	\lim_{x \to a^-} f(x) = \lim_{x \to a^+} f(x) = L \Rightarrow \lim_{x \to a} f(x) = L
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width= 10cm,
+				height= 7 cm,
+				axis lines = center,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				ymax = 8,
+				ymin = -8,
+				domain = -5:-0.05:0.05:5,
+				samples = 200,
+				xtick = {10},
+				ytick = {10},
+				]
+				
+				% Parte negativa: de -5 a -0.05
+				\addplot[
+				color=red,
+				thick,
+				smooth,
+				domain=-5:-0.05,
+				samples=100
+				] {1/x};
+				
+				% Parte positiva: de 0.05 a 5
+				\addplot[
+				color=red,
+				thick,
+				smooth,
+				domain=0.05:5,
+				samples=100
+				] {1/x};
+				
+				\node [red] at (axis cs:1.5,5) {$f(x) = \dfrac{1}{x}$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	\[
+	\lim_{x \to 0^-} \frac{1}{x} = -\infty \quad \text{e} \quad \lim_{x \to 0^+} \frac{1}{x} = \infty \quad \Rightarrow \quad \nexists\lim_{x \to 0} \frac{1}{x}
+	\]
+	\subsection{Propriedades dos limites}
+	Para limites sem indeterminações:
+	\begin{itemize}
+		\item \begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to a} c = c$ & como & $\displaystyle \lim_{x \to \infty} 2 = 2$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to a} x = a$ & como & $\displaystyle \lim_{x \to 7} x = 7$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to a} \alpha f(x) = \alpha \lim_{x \to a} f(x)$ & como & $\displaystyle \lim_{x \to 7} 4\,x = 28 = 4\,\lim_{x \to 7} x$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to a} [f(x) + g(x)] = \lim_{x \to a} f(x) + \lim_{x \to a} g(x)$ & como & $\displaystyle \lim_{x \to 7} x + 2 = 9 = \lim_{x \to 7} x + \lim_{x \to 7}2 $
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to a} [f(x) \cdot g(x)] = \lim_{x \to a} f(x) \cdot \lim_{x \to a} g(x)$ & como & $\displaystyle \lim_{x \to 2} [x^2 \cdot (2\,x+1)] = 20 = \left(\lim_{x \to 2} x^2\right) \cdot \left(\lim_{x \to 2} (2\,x+1)\right)$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)} = \frac{\displaystyle \lim_{x \to a} f(x)}{\displaystyle \lim_{x \to a} g(x)}$ & como & $\displaystyle \lim_{x \to 2} \frac{x^2}{2\,x+1} =\frac{4}{5}= \frac{\displaystyle \lim_{x \to 2} x^2}{\displaystyle \lim_{x \to 2} [2\,x+1]}$
+		\end{tabular}
+		
+		\item $\displaystyle \lim_{x \to a} [f(g(x))] = f\left(\lim_{x \to a} g(x)\right)$\\
+		
+		\begin{tabular}[t]{@{}p{0.4\textwidth}@{}p{0.05\textwidth}c@{}@{}}
+		Seja $f(x) = x^2$ e $g(x) = 2x+1$	 & então & $\displaystyle \lim_{x \to 2} \left[(2x+1)^2\right] = 25 = \left(\lim_{x \to 2} [2x+1]\right)^2$
+		\end{tabular}
+	\end{itemize}
+	No geral, se $f$ é contínua em $a$: $\displaystyle\lim_{x \to a} f(x) = f(a)$.
+	\subsubsection*{Limites no infinito:}
+	Quando aplicamos um limite no infinito, ele pode convergir (um número real) (1), divergir para ($\pm \infty$) (2) ou simplesmente não existir (não para em um único valor) (3):
+	\begin{enumerate}
+		\item 
+		\begin{tabular}[t]{@{}p{0.25\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to \infty} f(x) = a,\ a \in \mathbb{R}$ & como & $\displaystyle \lim_{x \to \infty} \left[1 + \frac{1}{x}\right] 1 + 0 = 1$
+		\end{tabular} 
+		
+		\item 
+		\begin{tabular}[t]{@{}p{0.25\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle \lim_{x \to \infty} f(x) = \infty$ & como &$\displaystyle \lim_{x \to \infty} x^3 = \infty$
+		\end{tabular}
+		
+		\item 
+		\begin{tabular}[t]{@{}p{0.25\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle \nexists \lim_{x \to \infty} f(x)$ & como & $\displaystyle \nexists \lim_{x \to \infty} \sin x$
+		\end{tabular}
+	\end{enumerate}
+	\subsection{Limites indeterminados}
+	Caso $f$ não for contínua no ponto, gerando algumas indeterminações, tais quais:
+	\begin{itemize}
+		\item \begin{tabular}[t]{@{}p{0.15\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle \frac{0}{0}$ & como & $\displaystyle \lim_{x \to 1} \frac{x^2 - 1}{x - 1}$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.15\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle \frac{\infty}{\infty}$ & como & $\displaystyle \lim_{x \to \infty} \frac{3x^2 - 1}{x^2 + 4}$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.15\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle \infty - \infty$ & como & $\displaystyle \lim_{x \to \infty} [x^2 -x]$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.15\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle 0 \cdot \infty$ & como & $\displaystyle \lim_{x \to \infty} \left[\frac{1}{x} \cdot e^x\right]$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.15\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\displaystyle1^\infty$ & como & $\displaystyle \lim_{x \to \infty} \left[\left(1 + \frac{1}{x}\right)^x\right]$
+		\end{tabular}
+		
+		\item \begin{tabular}[t]{@{}p{0.15\textwidth}@{}p{0.1\textwidth}c@{}@{}}
+			$\infty^0$ & como & $\displaystyle \lim_{x \to \infty} \left[(1 + x)^{1/x}\right]$
+		\end{tabular}
+	\end{itemize}
+	Para resolver essas indeterminações existem algumas ferramentas, essas envolvendo tanto manipulação algébrica quanto análise na relações entre funções. As mais comuns são:
+	\subsubsection*{Polinômios em evidência:}
+	Principalmente em polinômios tendendo ao infinito, o crescimento é mais acelerado nos polinômios de maior grau, sendo eles dominantes:
+		\[
+		\lim_{x \to \infty} \frac{3x^2 - 1}{x^2 + 4} = \lim_{x \to \infty} \frac{x^2\left(3 - \displaystyle \frac{1}{x^2}\right)}{x^2\left(1 + \displaystyle \frac{4}{x^2}\right)} = \lim_{x \to \infty} \frac{3 - \displaystyle \frac{1}{x^2}}{1 + \displaystyle \frac{4}{x^2}} = \frac{3}{1} = 3
+		\]
+	\subsubsection*{Fatoração:}
+		\[
+		\lim_{x \to 1} \frac{x^2 - 1}{x - 1} = \lim_{x \to 1} \frac{(x+1)(x-1)}{x - 1} = \lim_{x \to 1} [x + 1] = 2
+		\]
+	\subsubsection*{Substituição de variáveis:}
+		\[
+		\lim_{x \to 1} \frac{x^2 - 1}{x - 1}\text{, Se }h=x-1,\ h\to 0:\ 
+		\lim_{h \to 0} \frac{(h+1)^2 - 1}{h} = \lim_{h \to 0} \frac{h^2 + 2h + 1 - 1}{h} = \lim_{h \to 0} \frac{h^2 + 2h}{h} = \lim_{h \to 0} [h + 2] = 2
+		\]
+	\subsubsection*{Racionalização:}
+		\[
+		\lim_{x \to 0} \frac{\sqrt{x^2+9} - 3}{x^2} = \lim_{x \to 0} \left[\frac{\sqrt{x^2+9} - 3}{x^2} \, \frac{\sqrt{x^2+9} + 3}{\sqrt{x^2+9} + 3}\right] = \lim_{x \to 0} \frac{x^2+9 - 9}{x^2(\sqrt{x^2+9} + 3)} = \lim_{x \to 0} \frac{x^2}{x^2(\sqrt{x^2+9} + 3)} =
+		\]
+		\[
+		\lim_{x \to 0} \frac{1}{\sqrt{x^2+9} + 3} = \frac{1}{\sqrt{9} + 3} = \frac{1}{6}
+		\]
+		O método de racionalização funciona para qualquer expressão que possa ser transformada em um produto notável (não apenas para raízes).
+	\subsubsection*{Teorema do confronto (sanduíche):}
+	Mesmo que $\displaystyle \exists \lim_{x \to a} f(x)$, ou ele seja indefinido, mas $f(x) \geq g(x)$ e $f(x) \leq h(x)$ para todos os pontos próximos de $a$, tendo $g$ e $h$ com limites calculáveis, então é possível definir a relação:
+	\[
+	\lim_{x \to a} g(x) \leq \lim_{x \to a} f(x) \leq \lim_{x \to a} h(x)
+	\]
+	Para calcular $\displaystyle \lim_{x \to 0} \left[x^2 \sin\left(\frac{1}{x}\right)\right]$, mesmo que $\displaystyle \lim_{x \to 0} \sin\left(\frac{1}{x}\right)$ não exista, tem-se que:
+	\[
+	-1 \leq \sin\left(\frac{1}{x}\right) \leq 1 \Rightarrow -x^2 \leq x^2\sin\left(\frac{1}{x}\right) \leq x^2 \Rightarrow \lim_{x \to 0} -x^2 \leq \lim_{x \to 0} \left[x^2 \sin\left(\frac{1}{x}\right)\right] \leq \lim_{x \to 0} x^2 \Rightarrow 0  \leq \lim_{x \to 0} \left[x^2 \sin\left(\frac{1}{x}\right)\right] \leq 0 
+	\]
+	Logo, $\displaystyle \lim_{x \to 0} \left[x^2 \sin\left(\frac{1}{x}\right)\right] = 0 \text{, mesmo que } \nexists \text{ }\lim_{x \to 0} \sin\left(\frac{1}{x}\right)$.
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width=15cm,
+				height=8cm,
+				axis lines = center,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				xmin = -0.55,
+				xmax = 0.55,
+				ymin = -0.08,
+				ymax = 0.08,
+				domain = -0.5:0.5,
+				samples = 500,
+				xtick = {10},
+				ytick = {10}
+				]
+				
+				% Função -x² (limite inferior)
+				\addplot[
+				color = blue,
+				thick,
+				smooth
+				] {-x^2};
+				\node [blue] at (axis cs:0.15,-0.06) {$g(x)=-x^2$};
+				
+				% Função x² sin(1/x)
+				\addplot[
+				color = red,
+				thick,
+				smooth,
+				samples = 1000
+				] {(x^2)*sin(deg(1/x))};
+				\node [red] at (axis cs:0.42,-0.025) {$f(x)=\displaystyle x^2\sin\left(\frac1x\right)$};
+				
+				% Função x² (limite superior)
+				\addplot[
+				color = green,
+				thick,
+				smooth
+				] {x^2};
+				\node [green] at (axis cs:0.17,0.06) {$h(x)=x^2$};
+				
+				% Ponto na origem
+				\addplot[
+				color = black,
+				only marks,
+				mark = *,
+				mark size = 1.5pt
+				] coordinates {(0,0)};
+				
+				% Linhas pontilhadas para mostrar o "sanduíche"
+				\addplot[
+				color = gray,
+				dashed,
+				thick
+				] coordinates {(-0.5,0) (0.5,0)};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	\subsection{Teorema do valor intermediário (TVI)}
+	Se $f$ for uma função contínua em um intervalo $[a, b]$, se $d$ está entre $f(a)$ e $f(b)$, então existe um valor $c$, tal que $f(c) = d$.
+	\[
+	\text{Seja }f:[a,b]\to \mathbb{R} \text{ contínua. Se }f(a) \leq d \leq f(b)\Rightarrow \exists c\in[a,b] \text{, tal que: }f(c)=d
+	\]
+	\subsection{Formalizando o conceito de limite}
+	\[
+	\forall \varepsilon > 0\ \exists \delta > 0 \text{ tal que, }\forall x \in D_f \text{: }
+	0 < |x-a| < \delta \Rightarrow |f(x) - L| < \varepsilon
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}
+			% Eixos
+			\draw[->] (0,0) -- (6,0) node[right] {$x$};
+			\draw[->] (0,0) -- (0,4) node[above] {$y$};
+			
+			% Ponto a no eixo x
+			\draw (3,0.1) -- (3,-0.1) node[below, black] {$a$};
+			\draw[dashed, gray] (3,0) -- (3,2.5);
+			\draw[dashed, green] (2,0) -- (2,2.2);	
+			\draw[dashed, green] (4,0) -- (4,2.7);
+				
+			% Intervalo delta em x
+			\draw (2,0.1) -- (2,-0.1) node[below] {$a-\delta$};
+			\draw (4,0.1) -- (4,-0.1) node[below] {$a+\delta$};
+			
+			% Linha horizontal L
+			\draw [dashed, gray] (0,2.5) -- (6,2.5) node[right, black] {$L = f(a)$};
+			
+			% Banda epsilon
+			\draw[dashed,red] (0,2.7) -- (6,2.7);
+			\draw[dashed,red] (0,2.2) -- (6,2.2);
+			\node[red, right] at (6,3) {$L + \varepsilon$};
+			\node[red, right] at (6,2) {$L - \varepsilon$};
+			
+			% Função hipotética
+			\draw[blue,thick,smooth] plot coordinates {
+				(1,1.8) (2,2.2) (3,2.5) (4,2.7) (5,3)
+			};
+			
+			% Setas e texto
+			\draw[<->] (1.5,2.2) -- (1.5,2.7) node[midway,left] {};
+			\draw[<->] (2,0.5) -- (4,0.5) node[midway,below] {};
+			
+			% Ponto x
+			\fill (3,2.5) circle (2pt);
+			\fill (2,2.2) circle (2pt);
+			\fill (4,2.7) circle (2pt);
+			% Legenda
+			\node[blue] at (5,3.5) {$f(x)$};
+		\end{tikzpicture}
+	\end{center}
+	Pode-se tornar o valor de $f(x)$ arbitrariamente próximo de $L$ (diminuindo o módulo de $\varepsilon$) aproximando-se $x$ de $a$ (diminuindo o módulo de $\delta$) sem que ambos tenham de ser necessariamente iguais.
+	\section{Derivadas}
+	\subsection{Derivada em um ponto}
+	A taxa de crescimento de uma função qualquer em 2 pontos pode ser obtida por $\displaystyle \frac{\Delta y}{\Delta x} =  \frac{y_2 - y_1}{x_2 - x_1}$, sendo esse o coeficiente angular de uma reta secante à $f$ nos pontos $(x_1, f(x_1))$, $(x_2, f(x_2))$. \\\\ 
+	Quanto mais próximos os pontos $x_2$ e $x_1$, maior a precisão de modo que quando $x_2 - x_1\to 0$, encontra-se o coeficiente angular de uma reta tangente à $f$ no ponto $(a, f(a))$, sendo essa a derivada (taxa de variação instantânea).
+	\[
+	\frac{dy}{dx} \Big|_{x = a} = \frac{d}{dx}f(x) \Big|_{x=a} = f'(a) = \lim_{x \to a} \frac{f(x) - f(a)}{x - a}
+	\text{, se }x - a = h,\ h \to 0\text{: }\lim_{h \to 0} \frac{f(a + h) - f(a)}{h}
+	\]
+	Para $f(x) = x^3$, a taxa de variação entre $x_1 = 1$, $x_2 = 3$, e a derivada em $x = 2$ são:
+	\[
+	\frac{\Delta y}{\Delta x} = \frac{27-1}{3-1}=\frac{26}{2}=13
+	\]
+	\[
+	\displaystyle \frac{dy}{dx}\Big|_{x = 2} = \lim_{x\to2}\frac{x^3-2^3}{x-2}=\lim_{x\to2}\frac{(x-2)(x^2+2x+4)}{x-2}=\lim_{x\to2}[x^2+2x+4]=12
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel={$x$},
+				ylabel={$y$},
+				domain = -2:4,
+				xmin=-1, xmax=4,
+				ymin=-5, ymax=30,
+				samples=200,
+				grid=both,
+				xtick = {5},
+				ytick = {40},
+				width= 10cm,
+				height= 7 cm,
+				]
+				
+				% Função f(x) = x^3
+				\addplot[blue, thick] {x^3};
+				
+				% Reta secante
+				\def\xone{1}
+				\def\xtwo{3}
+				\def\fone{\xone*\xone*\xone}
+				\def\ftwo{\xtwo*\xtwo*\xtwo}
+				\addplot[green, thick, domain=-1:4] 
+				{\fone + ((\ftwo - \fone)/(\xtwo - \xone))*(x - \xone)};
+				
+				% Reta tangente em x = 2
+				\def\xthree{2}
+				\def\fthree{\xthree*\xthree*\xthree}
+				\def\dfthree{3*\xthree*\xthree}
+				\addplot[red, thick, domain=0:4] 
+				{\fthree + \dfthree*(x - \xthree)};
+				
+				% Pontos marcados
+				\addplot[only marks, mark=*] coordinates {(\xone,\fone) (\xtwo,\ftwo) (\xthree,\fthree)};
+				\node at (axis cs:0.7,3) {$(1, 1)$};
+				\node at (axis cs:2.65,28) {$(3, 27)$};
+				\node at (axis cs:2.3,6.5) {$(2, 8)$};
+				\node [blue] at (axis cs:-0.5,1.5) {$f(x) = x^3$};
+				
+				\node[red] at (axis cs:3.4,15) {$\displaystyle \frac{dy}{dx}\Big|_{x = 2} = 12$};
+				\node[green] at (axis cs:1.5,15) {$\displaystyle \frac{\Delta y}{\Delta x} = 13$};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	\subsubsection*{Diferenciabilidade:}
+	Uma função $f$ é diferenciável em um ponto $a$ se:
+	\begin{enumerate}
+		\item $\exists f(a)$ ($f(a)$ existe).
+		\item $\lim_{x \to a} f(x) = f(a)$ ($f$ é contínua nos arredores de $a$).
+		\item $f'_-(a) = f'_+(a)$ ($f$ não tenha ``quina'').
+	\end{enumerate}
+	
+	\subsubsection*{Derivada como uma função:}
+	Ao invés de considerar a derivada de uma função em um ponto específico é considerado um ponto qualquer.
+	\[
+	f(x) = x^2 \Rightarrow f'(x) = \lim_{x \to a} \frac{x^2 - a^2}{x - a} = \lim_{x \to a} \frac{(x + a)(x - a)}{x - a} = \lim_{x \to a} (x + a) = 2a \Rightarrow
+	f'(x) = 2x,\  x \in \mathbb{R}
+	\]
+	\subsection{Aproximação linear}
+	\[
+	f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} \Rightarrow f'(x) \approx \frac{f(x + h) - f(x)}{h},\ h \approx 0 \Rightarrow f(x + h) \approx f(x) + h\,f'(x),\ h\approx 0
+	\]
+	Para valores de $h$ pequenos, a variação da função é praticamente igual ao valor correspondente na reta tangente.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel={$x$},
+				ylabel={$y$},
+				xmin=0, xmax=2,
+				ymin=0, ymax=1.5,
+				legend pos=south east,
+				samples=200,
+				domain=0:2,
+				xtick = {5},
+				ytick = {40},
+				width= 10cm,
+				height= 7 cm,
+				]
+				
+				% Função original
+				\addplot[blue, thick] {sin(deg(x))};
+				
+				% Aproximação linear em x = 1
+				\def\xpoint{1}
+				\def\fpoint{sin(deg(\xpoint))}
+				\def\dfpoint{cos(deg(\xpoint))}
+				
+				\addplot[red, thick, domain=0:2] 
+				{\fpoint + (\x - \xpoint)*\dfpoint};
+				
+				% Ponto de tangência
+				\addplot[only marks, mark=*] coordinates {(\xpoint,\fpoint)};
+				\node[below right] at (axis cs:0.95,0.8) {\small $(1,\ \sin (1)) = (1,0.841471)$};
+				
+				\addplot [blue] [only marks, mark=*] coordinates {(\xpoint+0.3,0.9636)};
+				\node [blue] [below right] at (axis cs: 1.33,0.94) {\small $(1.3, 0.9636)$};
+				
+				\addplot [red] [only marks, mark=*] coordinates {(\xpoint+0.3
+				,1.004)};
+				\node [red] [left] at (axis cs: 1.25,1.035) {\small $(1.3, 1.0036)$};
+				
+				\node [blue] at (axis cs: 0.40,0.1) {$f(x) = \sin x$};
+				\node [red] at (axis cs: 0.35,0.75) {$f(1) + h\,f'(1)$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	A diferença dos valores é aproximadamente $0.04$ (muito pequena). Quanto menor o $h$, mais preciso é a relação.
+	\subsection{Propriedades das derivadas}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} [f(x) + g(x)] = \frac{d}{dx} f(x) + \frac{d}{dx} g(x)$
+		\item $\displaystyle \frac{d}{dx} [\alpha f(x)] = \alpha\,f'(x)$
+	\end{itemize}
+	\subsubsection*{Regra do produto:}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} [f(x) \cdot g(x)] = f'(x)\,g(x) + f(x)\,g'(x)$
+	\end{itemize}
+	\subsubsection*{Regra do quociente:}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx}\frac{f(x)}{g(x)} = \frac{f'(x)\,g(x) -f(x)\,g'(x)}{g^2(x)}$
+	\end{itemize}
+	\subsubsection*{Regra da cadeia:}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} f(g(x))=f'(g(x))g'(x)$
+	\end{itemize}
+	\hyperref[propriedades]{A dedução das propriedades no apêndice.}
+	\subsection{Derivada de funções inversas}
+	Considerando uma função inversa como $f(g(x)) = g(f(x)) = x$, tais quais $x^3$ e $\displaystyle \sqrt[3]{x}$, $e^x$ e $\ln{x}$, $\sin x$ e $\sin^{-1} x$, etc.
+	\[
+	f(f^{-1}(x)) = x \Rightarrow \frac{d}{dx} f(f^{-1}(x)) = \dfrac{d}{dx} x \Rightarrow f'(f^{-1}(x)) (f^{-1})'(x) = 1 \Rightarrow (f^{-1})'(x) = \dfrac{1}{f'(f^{-1}(x))}
+	\]
+	Considerando $\displaystyle f^{-1}(x) = \ln x \Rightarrow f(x) = e^x$, sendo $f'(x) = e^x$: $\displaystyle \dfrac{d}{dx} \ln x = \dfrac{1}{e^{\ln{x}}} = \frac{1}{x}$.
+	\subsection{Derivadas importantes}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} c = 0,\ c\in \mathbb{R}$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} \sin x = \cos x$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} \cos x = -\sin x$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} a^x = a^x \ln a \Rightarrow \frac{d}{dx} e^x = e^x$.
+	\end{itemize}
+		\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} \log_a x = \frac{1}{x\,\ln a} \Rightarrow \frac{d}{dx} \ln x = \frac{1}{x}$.
+	\end{itemize}
+	\subsubsection*{Regra do tombo:}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} x^n = n \, x^{n - 1},\ n \in \mathbb{R}^*$
+	\end{itemize}
+	\hyperref[derivadas]{A dedução das derivadas está no apêndice.}
+	\subsection{Derivada de ordem superior}
+	Trata-se apenas do processo de realizar a derivada de uma função que já tinha sido derivada anteriormente.
+	\[
+	\frac{d}{dx} \left( \frac{d}{dx} f(x) \right) = \frac{d^2}{dx^2}f(x) = f''(x) \text{ ou } f^{(2)}(x)
+	\]
+	\[
+	\frac{d}{dx} \left( \frac{d}{dx} \left( \cdots \left( \frac{d}{dx} f(x) \right) \right) \right) = \frac{d^n }{dx^n}f(x) = f^{(n)}(x)
+	\]
+	\[
+	\frac{d^3}{dx^3}\sin x = \frac{d}{dx}\left( \frac{d}{dx}\left( \frac{d}{dx} \sin x \right) \right) = \frac{d}{dx}\left( \frac{d}{dx} \cos x \right) = \frac{d}{dx} (-\sin x) = -\cos x
+	\]
+	\subsection{Derivada de uma função implícita}
+	Em uma função explícita, a variável dependente $y$ está expressa diretamente em termos da variável independente $x$, $y = f(x)$, ao par que em uma função explícita não é necessário ou não é fácil isolar $y$ explicitamente como função de $x$, tendo-se a relação $F(x,y) = 0$.\\\\
+	O processo para achar a taxa de variação de uma variável em relação à outra é basicamente derivando tudo e manipulando algebricamente a parte referente à variável de interesse até achar o resultado.\\\\
+	Com $F(x,y) = x^2 + y^2 - 25 = 0$, para achar $\dfrac{dy}{dx}$:
+	\[
+	\frac{d}{dx}F(x,y) = \frac{d}{dx}(x^2 + y^2 - 25) = \frac{d}{dx}(0) \Rightarrow \frac{d}{dx}x^2 + \frac{d}{dx}y^2 +  \frac{d}{dx}(25) = 0 \Rightarrow 2x + \dfrac{d}{dx}y^2 + 0 = 0
+	\]
+	Como, algebricamente, $\displaystyle \frac{d}{dx} y^2 = \frac{dy^2}{dx}  = \frac{dy^2}{dy}\frac{dy}{dx} = 2y\frac{dy}{dx}$:
+	\[
+	2x + 2y \dfrac{dy}{dx} = 0 \Rightarrow 2y \dfrac{dy}{dx} = -2x \Rightarrow \dfrac{dy}{dx} = -\dfrac{2x}{2y} -\dfrac{x}{y}
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5]
+		
+		% Eixos coordenados
+		\draw[->] (-6,0) -- (6,0) node[above] {$x$};
+		\draw[->] (0,-6) -- (0,6) node[right] {$y$};
+		
+		% Círculo x^2 + y^2 = 25
+		\draw[thick] (0,0) circle (5cm);
+		\node[left] at (0,-5.5) {$F(x,y)$};
+		
+		% Pontos importantes
+		\coordinate (P) at (5,0);
+		\coordinate (Q) at (0,5);
+		\coordinate (R) at (3,4); % ponto para tangente
+		\coordinate (O) at (0,0);
+		
+		% d/dx no ponto (0,5)
+		\draw[thick, red] (-6,5) -- (6,5);
+		\fill[red] (Q) circle (2.5pt);
+		\node [above left] at (Q) {$(0,5)$};
+		
+		% d/dx no ponto (0,5)
+		\draw[thick, blue] (5,6) -- (5,-6);
+		\fill[blue] (P) circle (2.5pt);
+		\node [below left] at (P) {$(5,0)$};
+		
+		\fill[black] (0,0) circle (2.5pt);
+		\node [below left] at (0,0) {$(0,0)$};
+		
+		\node [red, below right] at (5,4.5) {$\displaystyle \frac{dy}{dx} \Big|_{x = 0} = -\frac{0}{5} = 0$};
+		
+		\node [blue, above right] at (5,-5) {$\displaystyle \frac{dy}{dx} \Big|_{x = 0^+} = -\frac{5}{0^+} = -\infty$};
+		
+		\end{tikzpicture}
+	\end{center}
+	
+	\subsection{Derivação logarítmica}
+	
+	Dada uma função muito complexa, tal qual $\displaystyle f(x) = y = \frac{x^3 \sqrt{x^2 + 1}}{(3x + 2)^5}$, para encontrar $f'(x)$ teriam de ser usadas a regra do produto, a regra do quociente e a regra da cadeia, tornando-se um processo extremamente longo.\\\\
+	Uma abordagem interessante pode ser trabalhar com logaritmos, já que, algebricamente:
+	\[
+	\dfrac{d}{dx} \ln y = \frac{dy}{dx} \dfrac{d}{dy} \ln y = \frac{dy}{dx} \dfrac{1}{y} \Rightarrow \frac{dy}{dx} = y\,\frac{d}{dx}\ln y
+	\]
+	\[
+	y = \frac{x^3 \sqrt{x^2 + 1}}{(3x + 2)^5} \Rightarrow \ln y = \ln \left( \dfrac{x^3 \sqrt{x^2 + 1}}{(3x + 2)^5} \right) = \ln x^3 + \ln\left( \sqrt{x^2 + 1} \right) - \ln((3x + 2)^5) = 3\ln x + \dfrac{1}{2} \ln(x^2 + 1) - 5 \ln(3x + 2) \Rightarrow
+	\]
+	\[
+	\frac{d}{dx} \ln y = \frac{d}{dx} \left[ 3\ln x + \frac{1}{2} \ln(x^2 + 1) - 5 \ln(3x + 2) \right] = \frac{3}{x} + \frac{x}{x^2 + 1} - \frac{15}{3x+2}
+	\]
+	Como $\dfrac{dy}{dx} = y \dfrac{d}{dy} \ln y$:
+	\[
+	\frac{d}{dx} \left[ \dfrac{x^3 \sqrt{x^2 + 1}}{(3x + 2)^5} \right] = \dfrac{x^3 \sqrt{x^2 + 1}}{(3x + 2)^5}\left( \frac{3}{x} + \frac{x}{x^2 + 1} - \frac{15}{3x+2}\right)
+	\]
+	\subsection{Diferenciais}
+	Relembrando a aproximação linear:
+	\[
+	f(x+h) - f(x) \approx h f'(x)
+	\]
+	$h$ pode ser substituído por $\Delta x$, ficando:
+	\[
+	f(x+\Delta x) - f(x) \approx \Delta x\,f'(x) \Rightarrow \Delta y \approx \frac{dy}{dx} \, \Delta x \Rightarrow \frac{\Delta y}{\Delta x} \approx \frac{dy}{dx}.
+	\]
+	Como $dx$ é apenas uma referência à variação de $x$, de modo que, algebricamente, $\Delta x = dx$, ficando $\Delta y \approx dy$. \\\\
+	Isso faz sentido, já que $\displaystyle \frac{\Delta y}{\Delta x} \approx \frac{dy}{dx}$ para $\Delta x$ próximo de 0.\\\\
+	Portanto, para encontrar um valor na função, ao invés de seguir o caminho por $f$, seguimos pela reta tangente à um ponto conhecido ($y + \Delta y \approx y + dy$).
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel={$x$},
+				ylabel={$y$},
+				xmin=0, xmax=2,
+				ymin=0, ymax=1.5,
+				legend pos=south east,
+				samples=200,
+				domain=0:2,
+				width=11cm, height=7cm,
+				xtick=\empty,
+				ytick=\empty
+				]
+				
+				% Função original
+				\addplot[blue, thick] {sin(deg(x))};
+				
+				% Reta tangente em x = 1
+				\def\xpoint{1}
+				\def\fpoint{sin(deg(\xpoint))}
+				\def\dfpoint{cos(deg(\xpoint))}
+				\addplot[red, thick, domain=0:2] {\fpoint + (\x - \xpoint)*\dfpoint};
+				
+				% Linha horizontal preta no ponto de tangência
+				\addplot[dashed, black] coordinates {(0, \fpoint) (2, \fpoint)};
+				
+				% Ponto de tangência
+				\addplot[only marks, mark=*] coordinates {(\xpoint,\fpoint)};
+				
+				% Delta x
+				\def\deltax{0.4}
+				\def\xdelta{\xpoint+\deltax}
+				\def\fdelta{sin(deg(\xdelta))}
+				\def\linear{(\fpoint + \deltax*\dfpoint)}
+				
+				% Ponto real (curva)
+				\addplot[only marks, mark=*, blue] coordinates {(\xdelta,\fdelta)};
+				
+				% Ponto na reta (linear)
+				\addplot[only marks, mark=*, red] coordinates {(\xdelta,\linear)};
+				
+				% Define coordenadas calculadas para os labels
+				\pgfmathsetmacro{\xlabely}{\xdelta}
+				\pgfmathsetmacro{\xlabeldy}{\xdelta + 0.15}
+				\pgfmathsetmacro{\ylabel}{\fpoint - 0.1}
+				
+				% Delta y
+				\addplot[<->] coordinates {(\xlabely + 0.15,\fpoint) (\xlabely + 0.15,\fdelta)};
+				\node[black] at (axis cs:\xlabely + 0.15,\ylabel) {$\Delta y$};
+				
+				% dy
+				\addplot[<->] coordinates {(\xlabeldy + 0.25,\fpoint) (\xlabeldy + 0.25,\linear)};
+				\node[black] at (axis cs:\xlabeldy + 0.25,\ylabel) {$dy$};
+				
+				\addplot[dashed, black] coordinates {(\xpoint, \fpoint) (\xpoint, 0)};
+				
+				\addplot[dashed, black] coordinates {(\xdelta, \linear) (\xdelta, 0)};
+				
+				\addplot[<->] coordinates {(\xpoint,0.5) (\xdelta ,0.5)};
+				
+				\node[below] at (1.2,0.5) {$\Delta x = dx$};
+				
+				% Linha horizontal preta no ponto delta y
+				\addplot[dashed, black] coordinates {(-2, \fdelta) (2, \fdelta)};
+				
+				% Linha horizontal preta no ponto dy
+				\addplot[dashed, black] coordinates {(-2, \linear) (2, \linear)};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	Dessa maneira é possível aproximar funções que seriam complicadas de calcular.\\\\
+	Tendo $\displaystyle f(x) = \sqrt{x} \Rightarrow f'(x) = \dfrac{1}{2\sqrt{x}}$, tem-se, por exemplo, $\displaystyle f(4) = \sqrt{4} =2$. $f(4.02)=2.004994\dots$, sendo difícil de calcular manualmente, ao par que, por diferenciais, $\displaystyle f(4.02) \approx \sqrt{4} + \dfrac{0.02}{2\sqrt{4}} = 2 + \frac{0.02}{4} = 2+0.005 = 2.005$ (uma ótima aproximação, visto que o erro é menor que $0.000006$).
+
+	\subsection{L'Hôpital}
+	É uma ferramenta que permite resolver limites indeterminados do tipo $0/0$, ou $\infty/\infty$ de maneira simples.\\\\	
+	\subsubsection*{Caso de $\mathbf{0/0}$:}
+	Pode-se utilizar a intuição dada pelos diferenciais, onde $\displaystyle \Delta y \approx f'(x) \Delta x$, isso sendo uma igualdade para $\Delta x \to 0$.\\\\
+	Como $f(a) = 0$: $f(x) = -(0 - f(x)) = -(f(a) - f(x)) = -\Delta y_f$, e o mesmo para $g(x) = -\Delta y_g$:
+	\[
+	\lim_{x \to a} \frac{f(x)}{g(x)} = \lim_{x \to a} \frac{-\Delta y_f}{-\Delta y_g} =\lim_{x \to a} \frac{\Delta y_f}{\Delta y_g} = \lim_{x \to a} \frac{f'(x)\Delta x}{g'(x)\Delta x} = 
+	\lim_{x \to a} \frac{f'(x)}{g'(x)}
+	\]
+	\[
+	\lim_{x \to 0} \frac{\sin{x}}{x} \left( \text{que daria }\frac{0}{0} \right)=\lim_{x \to 0} \frac{\dfrac{d}{dx}\sin{x}}{\dfrac{d}{dx}x}=\lim_{x \to 0} \frac{\cos{x}}{1}=1
+	\]
+	\subsubsection*{Caso de $\mathbf{\infty/\infty}$:} 
+	É bastante intuitivo de se pensar que se $f$ cresce mais rápido que $g$, então $\displaystyle \lim_{x \to \infty} \frac{f(x)}{g(x)} = \infty$ e $\displaystyle \lim_{x \to \infty} \frac{g(x)}{f(x)} = 0$.\\\\
+	Para $\displaystyle \lim_{x \to \infty} \frac{\ln{x}}{x}$, com uma análise simples do crescimento das funções:
+	\[
+	\frac{\ln{10}}{10}= 0.230 \quad \frac{\ln{100}}{100}= 0.046 \quad \frac{\ln{1000}}{1000}= 0.007 \quad \frac{\ln{1000000}}{1000000}= 1.38 \cdot 10^{-5}
+	\]
+	$x$ cresce muito mais rápido que $\ln{x}$ quando $x\to\infty$, portanto, mesmo que ambas tendam ao infinito, $x$ sempre terá um valor muito maior do que $\ln{x}$.
+	\[
+	\lim_{x \to \infty} \frac{\ln{x}}{x}\left( \text{que daria }\frac{\infty}{\infty} \right)=\lim_{x \to \infty} \frac{\dfrac{d}{dx}\ln{x}}{\dfrac{d}{dx}x}=\lim_{x \to \infty} \frac{1/x}{1}=\lim_{x \to \infty} \frac{1}{x}=0
+	\]
+	Através de manipulação algébrica é possível abranger a regra de L'Hopital para casos diferentes dos explicitados.
+	\[
+	\lim_{x \to 0} \left[ \frac{1}{x} - \frac{1}{\sin x} \right] (\text{caso }\infty-\infty) = \lim_{x \to 0} \frac{-x+\sin x }{x\,\sin x} \left(\text{caso } \dfrac{\infty}{\infty}\right) = \lim_{x \to 0} \dfrac{\dfrac{d}{dx}\left[-x+\sin x \right] }{\dfrac{d}{dx}x\,\sin x} = \lim_{x \to 0} \frac{-1+\cos x }{\sin x + x\,\cos x} = 0
+	\]
+	\subsection{Derivadas para análise de uma função}
+	\subsubsection*{1ª derivada:}
+	Pode-se determinar o sentido de uma função em um ponto $a$, sendo que se $f'(a) < 0$ ela está \textbf{decrescendo}, se $f'(a) = 0$ \textbf{sua variação é nula} e se $f'(a) > 0$ ela está \textbf{crescendo}.
+	\subsubsection*{2ª derivada:}
+	Descobre-se a concavidade da função, de modo que se $f''(a) > 0$ a função é \textbf{convexa} (concavidade para cima), se $f''(a) = 0$ trata-se de um \textbf{ponto de inflexão} ou uma função afim, e se $f''(a) < 0$ trata-se de uma função \textbf{côncava} (para baixo).\\\\
+	\subsubsection*{Máximos e mínimos:}
+	Um \textbf{máximo local} possui $f'(a) = 0$ (pois caso contrário a função tem para onde crescer ou decrescer) e $f''(a) < 0$. Já para ser um \textbf{mínimo local}, deve possuir $f'(a) = 0$ e $f''(a) > 0$.\\\\
+	Para ser um \textbf{máximo} ou \textbf{mínimo global}, ele tem de ser o maior ou menor ponto da função no domínio respectivamente. Quando o intervalo é fechado $[a,b]$, os máximos e mínimos globais podem ser pontos referentes aos os máximos e mínimos locais ou $f(a)$ ou $f(b)$).
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel={$x$},
+				ylabel={$y$},
+				xmin=0, xmax=6.5,
+				ymin=-4.5, ymax=9.5,
+				xtick={10},
+				ytick={15},
+				width=14cm,
+				height=8cm,
+				domain=0:6,
+				samples=200,
+				grid=both,
+				legend style={at={(0.95,0.95)}, anchor=north east},
+				]
+				
+				% Curva da função
+				\addplot[blue, thick, smooth, domain=0.5:6] { -0.3*(x - 1)*(x - 4)*(x - 6)};
+				
+				% Pontos principais
+				\addplot[only marks, mark=*, mark size=2pt] coordinates {
+					(0.5,0) (6,0)
+				};
+				
+				
+				\addplot[only marks, mark=*, blue, mark size=2pt] coordinates {
+				(0.5,2.8875)
+				(2.2137,-2.463) (5.1196,1.2182) 
+				};
+				
+				
+				% Ponto de inflexão
+				\addplot[only marks, mark=*, red, mark size=2.2pt] coordinates {(3.66667,-0.62222)};
+				
+				\draw [dashed] (0.5,2.8875) -- (0,2.8875);
+				
+				\draw [dashed] (0.5,2.8875) -- (0.5,0);
+				
+				\draw [dashed] (5.1196,1.2182) -- (0,1.2182);
+				
+				\draw [dashed] (2.2137,-2.463) -- (0,-2.463);
+				
+				% Rótulos dos pontos 
+				\node[blue, right] at (axis cs:0.5,2.9) {\small \textbf{Máximo global}};
+				\node[blue, below] at (axis cs:2.2137,-2.463) {\small \textbf{Mínimo local e global}};
+				\node[blue, above] at (axis cs:5.1196,1.2182) {\small \textbf{Máximo local}};
+				\node[below] at (axis cs:0.5,0) {\small $a$};
+				\node[below] at (axis cs:6,0) {\small $b$};
+				\node[below right, red] at (axis cs:3.8,-0.8) {\small \textbf{\textcolor{red}{Ponto de inflexão}}};
+				
+				\node [blue, below right] at (1.35,-0.2) {$f(x),\ D_f = [a, b]$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	\subsection{Assíntotas}
+	Trata-se do comportamento que algumas funções tem de se aproximarem à uma reta para certos valores.
+	\subsubsection*{Horizontais:}
+	Se aproximam de uma reta horizontal quando $\displaystyle \lim_{x \to \pm\infty} f(x) = c, \; c \in \mathbb{R}$.\\\\
+	$\displaystyle \lim_{x \to -\infty} 2+\frac{1}{x} = \lim_{x \to \infty} 2+\frac{1}{x} = 2$, logo, $f$ tem uma assíntota horizontal em $y=2$.
+	\begin{center}
+		\begin{tikzpicture}
+		\begin{axis}[
+			axis lines = middle,
+			xlabel = \(x\),
+			ylabel = \(y\),
+			xmin = -20, xmax = 20,
+			ymin = -1, ymax = 5,
+			domain = -20:20,
+			samples = 200,
+			width = 16cm,
+			xtick={30},
+			ytick={30},
+			height = 8cm
+			]
+			
+			% Assíntota horizontal: y = 2
+			\addplot[red, thick, dashed] {2};
+			
+			% Função f(x) = 2 + 1/x
+			\addplot[blue, thick] {2 + 1/x};
+			
+			% Destacar o limite quando x -> infinito
+			\node[blue] at (10, 2.7) {$\displaystyle f(x) = 2+\frac{1}{x}$};
+			
+			\node[red] at (10, 1.7) {$y = 2$};
+		\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	\subsubsection*{Verticais:}
+	Se aproximam de uma reta vertical quando $\displaystyle \lim_{x \to c^\pm} = \pm\infty, \; c \in \mathbb{R}$.\\\\
+	$\displaystyle \lim_{x \to (\pi/2)^-} \tan x = \infty$ e $\displaystyle \lim_{x \to (\pi/2)^+} \tan x = -\infty$, logo, $f$ tem uma assíntota vertical em $x = \pi/2$.
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = middle,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				xmin = -4.6, xmax = 4.6,
+				ymin = -5, ymax = 5,
+				samples = 200,
+				width = 12cm,
+				xtick={30},
+				ytick={30},
+				height = 8cm
+				]
+				
+				% Assíntota horizontal: x = pi/2
+				\draw[dashed,red] (pi/2, -5) -- (pi/2, 5);
+				
+				% Função f(x) = tan(x)
+				\addplot[blue, thick, domain=-1.4:1.4] {tan(deg(x))};
+				\addplot[blue, thick, domain=1.75:4.55] {tan(deg(x))};
+				\addplot[blue, thick, domain=-4.55:-1.75] {tan(deg(x))};
+				
+				% Destacar o limite quando x -> pi/2
+				\node[blue, right] at (1.57, 2.7) {$\displaystyle f(x) = \tan x$};
+				
+				\node[red, right] at (1.57, 1.7) {$x = \dfrac{\pi}{2}$};
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	\subsubsection*{Oblíquas:}
+	Quando uma função $f$ tende à uma reta $g(x) = a\,x + b$, onde, dessa maneira, $\displaystyle \lim_{x\to \infty}[f(x)-g(x)]=0$. \\\\
+	Para encontrá-la, pode-se usar a noção de que, se o crescimento de $m$ é maior do que $h$: $f(x) = m(x) + h(x)\approx m(x)$, quando $x\to \infty$.\\\\
+	Sendo $\displaystyle f(x) = \frac{2x^2-3x-\ln{x}}{x+1}$, para valores $x$ muito grandes:
+	\[
+	\frac{2x^2-3x-\ln{x}}{x+1} = 
+	\frac{2x^2-3x}{x+1} - \frac{\ln{x}}{x+1} \approx \frac{2x^2-3x}{x+1}=2x-5+\frac{5}{x+1}\approx2x-5
+	\]
+	Como $\displaystyle \lim_{x\to \infty}\left[\frac{2x^2-3x-\ln{x}}{x+1}-(2x-5)\right] = 0$, então $2x-5$ é uma assíntota oblíqua de $f$.
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = middle,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				xmin = 0, xmax = 10,
+				ymin = -6, ymax = 20,
+				samples = 2800,
+				width = 8cm,
+				xtick={30},
+				ytick={60},
+				height = 8cm
+				]
+				
+				\addplot[blue, thick, domain=0.001:20] 
+				{(2*x^2 - 3*x - ln(x))/(x+1)};
+				
+				\node [blue, above left] at (7, 9) {$\displaystyle f(x)=\frac{2x^2-3x-\ln{x}}{x+1}$};
+				
+				\addplot[red, dashed, domain=0:20] {2*x - 5};
+				
+				\node [red, below right] at (5, 5) {$\displaystyle g(x)=2x - 5$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	\section{Integrais}
+	\subsection{Primitivas}
+	São o processo oposto das derivadas, de modo que, $F$ é primitiva de $f$, se:
+	\[
+	\frac{d}{dx}F(x) = f(x) \Leftrightarrow \int f(x)\,dx = F(x) + c\text{, em que $c$ é constante que é perdida na derivada.}
+	\]
+	\[
+	\frac{d}{dx}\left[ 2x + 4 \right] = 2 \Leftrightarrow \int 2\,dx = 2x + c\text{. Para a mesma função, basta assumir } c = 4 \Rightarrow 2x + 4
+	\]
+	Toda função contínua em um intervalo possui uma primitiva nesse espaço.
+	\subsubsection*{Primitivas comuns:}
+	Realizando o processo inverso do cálculo da derivada:
+	\begin{itemize}
+		\item $\displaystyle \int a\,dx = a\,x + c$.
+	\end{itemize}
+		\begin{itemize}
+		\item $\displaystyle \int \sin{x}\,dx = -\cos{x} + c$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \int \cos{x}\,dx = \sin{x} + c$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \int a^x\,dx = \frac{a^x}{\ln a} + c \Rightarrow int e^x\,dx = e^x + c$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \int \frac{1}{x}\,dx =\int \frac{dx}{x} = \ln|x| + c$ $\Rightarrow \displaystyle \int \frac{1}{x\,\ln a}\,dx = \frac{\ln|x|}{\ln a} + c = \log_a |x| + c$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \int x^n\,dx = \frac{x^{n+1}}{n+1} + c,\ n \neq -1$.
+	\end{itemize}
+	\subsubsection*{Propriedades:}
+	\begin{itemize}
+		\item $\displaystyle \int \alpha f(x)\,dx = \alpha \int f(x)\,dx$.
+	\end{itemize}
+	\begin{itemize}
+		\item $\displaystyle \int f(x) + g(x)\,dx = \int f(x)\,dx + \int g(x)\,dx$.
+	\end{itemize}
+	Não existe uma regra da cadeia, regra do produto ou regra do quociente para a resolução de primitivas, fazendo-se necessário o uso de métodos mais refinados para resolver integrais de maior complexidade.
+	
+	\subsection{Integrais definidas}
+	
+	As integrais são ferramentas que permitem calcular a área do gráfico acima e abaixo do eixo $x$ no intervalo $a \leq x \leq b$ (áreas positivas e negativas, respectivamente). Essa lógica vem da aproximação da área através da soma de retângulos de lados $\Delta x$ e altura $f(x_i)$, ficando:
+	\[
+	A \approx \sum_{i=1}^n f(x_i)\cdot\Delta x\text{, de modo que:}\quad A = \lim_{n \to \infty} \sum_{i=1}^n f(x_i)\cdot\Delta x = \int_a^b f(x)\,dx
+	\]
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines=middle,
+				xlabel={$x$},
+				ylabel={$y$},
+				ymin=-0.3, ymax=3.5,
+				xmin=0, xmax=11,
+				xtick={15},
+				ytick={10},
+				domain=0:10,
+				samples=200,
+				width=14cm,
+				height=8cm,
+				legend pos=north east,
+				grid=both
+				]
+				
+				% Retângulos de Riemann (à esquerda) — sem legenda
+				\addplot [
+				ybar interval,
+				bar width=2pt,
+				draw=black,
+				fill=gray!40,
+				samples at={1,1.5,...,10},
+				forget plot  % <--- impede que vá para a legenda
+				]
+				{sin(deg(x/2)) + ln(x + 1)};
+				
+				% Curva da função — com legenda
+				\addplot [blue, thick, domain=1:10] {sin(deg(x/2)) + ln(x + 1)};
+				
+				\node [blue] at (5,3) {$\displaystyle f(x),\ [a,b]$};
+				
+				\node [below right] at (1,0) {$a$};
+				
+				\node [below] at (10,0) {$b$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	
+	\subsubsection*{Teorema fundamental do cálculo:}
+	Relaciona integrais definidas e primitivas:
+	\[
+	\int_a^b f(x)\,dx = F(b) - F(a)
+	\]
+	\hyperref[integrais definidas]{A dedução do teorema encontra-se no apêndice.}
+	\subsubsection*{Integrais impróprias:}
+	Integrais cujos limites de integração são infinitos:
+	\begin{itemize}
+		\item $\displaystyle \int_a^{\infty} f(x)\,dx = \lim_{b \to \infty}\int_a^bf(x)\,dx$
+		\item $\displaystyle
+		\int_{-\infty}^b f(x)\,dx = \lim_{a \to -\infty}\int_a^bf(x)\,dx$
+		\item $\displaystyle
+		\int_{-\infty}^{\infty} f(x)\,dx = \lim_{a \to -\infty}\left[\lim_{b \to \infty}\int_a^bf(x)\,dx\right]$
+	\end{itemize}
+	Ou integrais de funções descontínuas em certos pontos dentro do intervalo $[a,b]$:
+	\begin{itemize}
+		\item $\displaystyle \int_a^b f(x)\,dx = \lim_{k \to c^-} \int_a^k f(x)\,dx + \lim_{k \to c^+} \int_k^b f(x)\,dx,\quad \nexists f(c)$
+	\end{itemize}
+	\subsection{Métodos de integração}
+	
+	\subsubsection*{Substituição de variáveis:}
+	\[
+	\frac{d}{dx}f(g(x)) = f'(g(x))g'(x)\Rightarrow \int f'(g(x))g'(x)\,dx = f(g(x)) + c
+	\]
+	\[
+	\int x\sqrt{x^2+1} \, dx\text{, se $u = x^2 + 1$ e $du = 2x \,dx \Rightarrow dx = \frac{du}{2x}$: } \int x\sqrt{x^2+1} \, dx = 
+	\int \frac{x \sqrt{u}}{2x} \, du =\frac{1}{2}\int u^{1/2} \, du =
+	\]
+	\[
+	\frac{1}{2} \frac{u^{3/2}}{3/2} + c =  \frac{(x^2+1)^{3/2}}{3}+c \Rightarrow \int x\sqrt{x^2+1} \, dx = \frac{(x^2+1)^{3/2}}{3}+c
+	\]
+	
+	\subsubsection*{Integral por partes:}
+	\[
+	\frac{d}{dx} [f(x)\,g(x)] = f'(x)\,g(x) + f(x)\,g'(x) \Rightarrow 
+	\int\frac{d}{dx} [f(x)\,g(x)] \, dx = \int f'(x)\,g(x)\, dx + \int f(x)\,g'(x) \, dx \Rightarrow
+	\]
+	\[
+	f(x)\,g(x) = \int f'(x)\,g(x)\, dx + \int f(x)\,g'(x) \, dx \Rightarrow
+	\int f(x)\,g'(x) \, dx=f(x)\,g(x) - \int f'(x)\,g(x)\, dx
+	\]
+	De maneira simplificada, considerando $f(x) = u$, $f'(x) = du$, $g(x) = v$ e $g'(x) = dv$:
+	\[
+	\int u\,dv =u\,v -\int v\,du
+	\]
+	\[
+	\int x^3 e^x \, dx \text{, se $u = x^3$, $du = 3x^2$, $dv = e^x$ e $v = e^x$: }
+	\int x^3 e^x \, dx = x^3 e^x - \int 3x^2 e^x \, dx = x^3 e^x -3 \int x^2 e^x \, dx
+	\]
+	\[
+	\text{Se $u = x^2$, $du = 2x$, $dv = e^x$ e $v = e^x$: }\int x^3 e^x \, dx = x^3 e^x - 3\left(x^2 e^x - \int 2x\, e^x \, dx\right) = x^3 e^x - 3\left(x^2 e^x - 2\int x\, e^x \, dx\right)
+	\]
+	\[
+	\text{Se $u = x$, $du = 1$, $dv = e^x$ e $v = e^x$: }\int x^3 e^x \, dx = x^3 e^x - 3\left(x^2 e^x - 2\left( x\,e^x - \int e^x\,dx \right)\right) \Rightarrow
+	\]
+	\[
+	\displaystyle \int x^3 e^x \, dx = x^3 e^x -3x^2 e^x + 6x\,e^x - 6 e^x + c = e^x (x^3 - 3x^2 + 6x - 6) + c
+	\]
+	Um método eficiente de resolver uma integral por partes é montando duas colunas, uma com o valor que vai ser o $u$ e outra o $dv$, de modo que na linha abaixo são colocados o $du$ e o $v$. Alterna-se a ligação do $u$ com o $v$ em + e - até $u = 0$.
+	\[
+	\int x^3 e^x \, dx 
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			
+			% Texto da tabela
+			\node at (0,0) {$x^3$};
+			\node at (0,-1) {$3x^2$};
+			\node at (0,-2) {$6x$};
+			\node at (0,-3) {$6$};
+			\node at (0,-4) {$0$};
+			\node at (2,0) {$e^x$};
+			\node at (2,-1) {$e^x$};
+			\node at (2,-2) {$e^x$};
+			\node at (2,-3) {$e^x$};
+			\node at (2,-4) {$e^x$};
+			\node at (-0.1,0.5) {\textbf{u}};
+			\node at (2,0.5) {\textbf{dv}};
+			
+			% Setas (método tabular)
+			\draw[->] (0.3,0) -- (1.7,-1); \node at (1.1,-0.35) {$+$};
+			\draw[->] (0.3,-1) -- (1.7,-2); \node at (1.1,-1.35) {$-$};
+			\draw[->] (0.3,-2) -- (1.7,-3); \node at (1.1,-2.35) {$+$};
+			\draw[->] (0.3,-3) -- (1.7,-4); \node at (1.1,-3.35) {$-$};
+			\draw[red, ->] (0.3,-4.1) -- (1.7,-4.1); \node at (1.1,-3.9) {\color{red}$+$};
+			
+		\end{tikzpicture}
+	\end{center}
+	\[
+	\int x^3 e^x \, dx = x^3e^x - 3x^2e^x + 6xe^x - 6e^x + \int 0\cdot e^x \,dx = e^x (x^3 - 3x^2 + 6x - 6) + c
+	\]
+	Nesse caso a integral era por partes chegava em uma integral conhecida, mas ela pode ser periódica. Quando obtêm-se um termo repetido, ele é usado para simplificar a equação.
+	\[
+	\int e^x \sin{x} \, dx 
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			
+			% Texto da tabela
+			\node at (0,0) {$\sin{x}$};
+			\node at (0,-1) {$\cos{x}$};
+			\node at (0,-2) {$-\sin{x}$};
+			\node at (2,0) {$e^x$};
+			\node at (2,-1) {$e^x$};
+			\node at (2,-2) {$e^x$};
+			\node at (-0.1,0.5) {\textbf{u}};
+			\node at (2,0.5) {\textbf{dv}};
+			
+			% Setas (método tabular)
+			\draw[->] (0.43,0) -- (1.7,-1); \node at (1.1,-0.3) {$+$};
+			\draw[->] (0.43,-1) -- (1.7,-2); \node at (1.1,-1.3) {$-$};
+			\draw[red, ->] (0.55,-2.1) -- (1.7,-2.1); \node at (1.1,-1.9) {\color{red}$+$};
+			
+		\end{tikzpicture}
+	\end{center}
+	
+	\[
+	\int e^x \sin{x} \, dx=e^x\sin{x}-e^x\cos{x}-\int e^x\sin{x} \,dx \Rightarrow 2\int e^x \sin{x} \, dx=e^x\sin{x}-e^x\cos{x} + c\Rightarrow 
+	\]
+	\[
+	\int e^x \sin{x} \, dx=\frac{e^x(\sin{x}-\cos{x})}{2} + c
+	\]
+	\subsubsection*{Integrais trigonométricas:}
+	\begin{enumerate}
+		\item 
+		\[
+		\int \sin^m{x} \cos{x} \, dx \text{, ou }\int \cos^m{x} \sin{x} \, dx
+		\]
+		Substituir: $u = \sin{x}$ e $du = \cos{x}\, dx$ ou $u = \cos{x}$ e $-\sin{x} \, dx$.
+		\item 
+		\[
+		\int \sin^m{x}\, dx \text{, ou }\int \cos^m{x}\, dx \quad m\,\%\,2 = 0
+		\]
+		Substituir: $\displaystyle \sin^2{x} = \frac{1-\cos{(2x)}}{2}$ ou $\displaystyle \cos^2{x} = \frac{1+\cos{(2x)}}{2}$
+		\item 
+		\[
+		\int \sin^m{x}\, dx \text{, ou }\int \cos^m{x}\, dx \quad m\,\%\,2 = 1
+		\]
+		Usar a propriedade: $\sin^2{x}+\cos^2{x}= 1$, e transformar a integral em uma do caso 1.
+		\item 
+		\[
+		\int \sin^m{x} \cos^n{x} \, dx
+		\]
+		Usar a propriedade: $\sin^2{x}+\cos^2{x}= 1$, e transformar a integral em uma do caso 1 ou 2.
+		\item 
+		\[
+		\int \sin(ax) \sin(bx) \, dx \text{, ou } \int \sin(ax) \cos(bx) \, dx \text{, ou } \int \cos(ax)\cos(bx) \, dx
+		\]
+		Usar as propriedades:
+		\begin{itemize}
+			\item $\displaystyle \sin(a)\sin(b) = \frac{1}{2} (\cos(a-b) - \cos(a+b))$
+			\item $\displaystyle \cos(a)\cos(b) = \frac{1}{2} (\cos(a-b) + \cos(a+b))$
+			\item $\displaystyle \sin(a)\cos(b) = \frac{1}{2} (\sin(a+b) + \sin(a-b))$
+		\end{itemize}
+		\item 
+		\[
+		\int \tan^m(x) \, dx \text{, ou } \int \sec^n(x) \, dx
+		\]
+		Usar a propriedade: $\tan^2(x) + 1 = \sec^2(x)$, e/ou realizar integral por partes, a depender do caso.
+	\end{enumerate}
+	\subsubsection*{Substituição trigonométrica:}
+	Com $\sin^2 \theta + \cos^2 \theta = 1 \text{, e } \tan^2 \theta + 1 = \sec^2 \theta$, utiliza-se um triângulo retângulo com um ângulo $\theta$, tal que $f(x)$ e $x$ são elementos do triângulo.
+	\[
+	\int \frac{dx}{\sqrt{4 + x^2}}
+	\]
+	\[
+	\begin{tikzpicture}
+	% Triângulo
+	\draw (0,0) -- (2,0) -- (2,1.5) -- cycle;	
+	% Lados
+	\node at (1.15, -0.3) {\small 2};
+	\node at (2.3, 0.75) {\small $x$};
+	\node[rotate=36.87] at (0.9,1) {\small $\sqrt{4 + x^2}$};
+		
+	% Ângulo reto (quadrado)
+	\draw (2,0) -- (1.85,0) -- (1.85,0.15) -- (2,0.15);		
+		
+	% Arco do ângulo θ
+	\draw (0.4,0) arc[start angle=0, end angle=36.87, radius=0.4];
+	\node at (0.6,0.2) {\small $\theta$};
+		
+	\end{tikzpicture}
+	\]
+	Analisando o triângulo:
+	\[
+	\tan \theta= \frac{x}{2} \Rightarrow x = 2\tan \theta \quad dx = 2 \sec^2 \theta \, d\theta \Rightarrow 	\int \frac{dx}{\sqrt{4 + x^2}}=\int \frac{2 \sec^2\theta}{\sqrt{4 + 4 \tan^2 \theta}}\, d\theta = \int \frac{2 \sec^2\theta}{\sqrt{4(1 + \tan^2 \theta)}}\, d\theta =
+	\]
+	\[
+	\int \frac{2 \sec^2\theta}{\sqrt{4\sec^2 \theta}}\, d\theta = \int \frac{2 \sec^2\theta}{2 |\sec \theta|}\, d\theta \text{, como $\theta = \tan^{-1}\left(\dfrac{x}{2}\right)$, $D_\theta = [-\pi/2,\,\pi/2]$}
+	\]
+	Como, nesse intervalo, para todo $\theta$, $\sec \theta \ge 0$, então $|\sec \theta| = \sec \theta$. Logo:
+	\[
+	\int \frac{\sec^2\theta}{|\sec \theta|}\, d\theta = \int \frac{\sec^2 \theta}{\sec \theta} \, d\theta = \int \sec \theta \, d\theta = \int \sec \theta \frac{\sec \theta + \tan \theta}{\sec \theta + \tan \theta}\, d\theta=\int \frac{\sec^2 \theta + \sec \theta\,\tan \theta}{\sec \theta + \tan \theta}\, d\theta
+	\]
+	\[
+	\text{Se $u = \sec \theta + \tan \theta$ e $du = \sec^2 \theta + \sec \theta\,\tan \theta\, d\theta \Rightarrow d\theta = \dfrac{du}{\sec^2 \theta + \sec \theta\,\tan \theta}$}:
+	\]
+	\[
+	\int \frac{\sec^2 \theta + \sec \theta\,\tan \theta}{u} \frac{1}{\sec^2 \theta + \sec \theta\,\tan \theta}\, du = \int \frac{du}{u} = \ln{|u|} + c=  \ln |\sec \theta + \tan \theta| + c = \ln \left|\frac{\sqrt{4 + x^2}}{2} + \frac{x}{2}\right| + c \Rightarrow
+	\]
+	\[
+	\displaystyle \int \frac{dx}{\sqrt{4 + x^2}} = \ln \left|\frac{\sqrt{4 + x^2}}{2} + \frac{x}{2}\right| + c
+	\]
+	\subsubsection*{Frações parciais:}
+	Trata-se de separar uma fração com denominador polinomial em uma soma de frações mais simples.
+	\[
+	\int\frac{5x - 3}{x^2 - 2x - 3}\,dx= \int \frac{5x - 3}{(x+1)(x-3)}\,dx = \int \frac{A}{x+1} + \frac{B}{x-3}\,dx
+	\]
+	\[
+	5x - 3= A(x-3) + B(x+1) \Rightarrow (A + B - 5)x +(-3A + B +3) = 0
+	\]
+	\[
+	\begin{cases}
+		A + B = 5 \\
+		-3A + B = -3
+	\end{cases} \Rightarrow
+	A = 2\text{, }B=3 \Rightarrow \int \frac{2}{x+1} + \frac{3}{x-3}\,dx = 2\ln{|x+1|}+3\ln{|x-3|}+c
+	\]
+	Caso o polinômio de $f(x)$ seja de maior grau do que o de $g(x)$, fatora-se:
+	\[
+	\frac{f(x)}{g(x)} = m(x)+\frac{h(x)}{g(x)}
+	\]
+	Caso o denominador seja um quadrado perfeito, como:
+	\[
+	\frac{2x}{(x+1)^2}\text{, tem-se que: }\frac{2x}{(x+1)^2}=\frac{A}{x+1}+\frac{B}{(x+1)^2}
+	\]
+	Caso o denominador seja um polinômio irredutível, como: 
+	\[
+	\frac{7x+2}{(x+2)(x^2+5)}\text{, tem-se que: } \frac{7x+2}{(x+2)(x^2+5)}= \frac{A}{x+2}+\frac{Bx+c}{x^2+5}
+	\]
+	\section*{Apêndice A}
+	\label{propriedades}
+	\subsection*{Dedução das propriedades de derivadas}
+	\subsubsection*{Soma de derivadas:}
+	\[
+	\frac{d}{dx} [f(x) + g(x)] = \lim_{h \to 0} \frac{[f(x + h) + g(x + h)] - [f(x) + g(x)]}{h} = \lim_{h \to 0} \frac{[f(x + h) -f(x)] + [g(x + h) - g(x)]}{h} = 
+	\]
+	\[
+	\lim_{h \to 0}\frac{f(x + h) -f(x)}{h} + \lim_{h \to 0}\frac{g(x + h) - g(x)}{h} = f'(x) + g'(x) \Rightarrow
+	\frac{d}{dx} [f(x) + g(x)] = f'(x) + g'(x)
+	\]
+	\subsubsection*{Produto de derivada com escalar:}
+	\[
+	\frac{d}{dx} [\alpha\,f(x)] = \lim_{h \to 0} \frac{\alpha\, f(x + h) - \alpha\,f(x)}{h} = \lim_{h \to 0} \frac{\alpha[f(x + h) - f(x)]}{h} = \alpha\left(\lim_{h \to 0} \frac{f(x + h)-f(x)}{h}\right) = \alpha\,f'(x)
+	\]
+	\subsubsection*{\textcolor{red}{Observação!}}
+	Para a \textbf{regra do produto}, \textbf{regra do quociente} e \textbf{regra da cadeia}, a noção de aproximação linear ($f(x + h) \approx f(x) + h\,f'(x),\ h \approx 0$) é importante.
+	\subsubsection*{Regra do produto:}
+	\[
+	\frac{d}{dx} [f(x) \cdot g(x)] = \lim_{h \to 0} \frac{f(x + h)\, g(x + h) - f(x)\, g(x)}{h}=\lim_{h \to 0} \frac{(f(x) + h\,f'(x))(g(x) + h\,g'(x)) - f(x)\,g(x)}{h}=
+	\]
+	\[
+	\lim_{h \to 0} \frac{f(x)\,g(x) + h\,f'(x)\,g(x) + h\,f(x)\,g'(x) + h^2f'(x)\,g'(x) - f(x)\,g(x)}{h}=
+	\]
+	\[
+	\lim_{h \to 0} \frac{h f'(x)\,g(x) + hf(x)\,g'(x) + h^2f'(x)\,g'(x)}{h}=\lim_{h \to 0} \frac{h(f'(x)\,g(x) + f(x)\,g'(x) + h\,f'(x)\,g'(x))}{h}=
+	\]
+	\[
+	\lim_{h \to 0} [f'(x)\,g(x) + f(x)\,g'(x) + hf'(x)\,g'(x)]=f'(x)\,g(x) + f(x)\,g'(x)
+	\Rightarrow
+	\frac{d}{dx} [f(x) \cdot g(x)] = f'(x)\,g(x) + f(x)\,g'(x)
+	\]
+	\subsubsection*{Regra do quociente:}
+	\[
+	\frac{d}{dx}\frac{f(x)}{g(x)} = lim_{h \to 0} \frac{\displaystyle \frac{f(x+h)}{g(x+h)} - \frac{f(x)}{g(x)}}{h} = \lim_{h \to 0} \frac{\displaystyle \frac{f(x) + hf'(x)}{g(x)+h\,g'(x)} - \frac{f(x)}{g(x)}}{h}= 
+	\]
+	\[
+	\lim_{h \to 0} \frac{f(x)\,g(x) + hf'(x)\,g(x) -(f(x)\,g(x)+hf(x)\,g'(x))}{h(g^2(x)+h\,g'(x)\,g(x))}=\lim_{h \to 0} \frac{h(f'(x)\,g(x) - f(x)\,g'(x))}{h(g^2(x)+h\,g'(x)\,g(x))}=
+	\]
+	\[
+	\lim_{h \to 0} \frac{f'(x)\,g(x) - f(x)\,g'(x)}{g^2(x)+h\,g'(x)\,g(x)} = \frac{f'(x)\,g(x) -f(x)\,g'(x)}{g^2(x)} \Rightarrow
+	\frac{d}{dx}\frac{f(x)}{g(x)} = \frac{f'(x)\,g(x) -f(x)\,g'(x)}{g^2(x)}
+	\]
+	\subsubsection*{Regra da cadeia:}
+	\[
+	\frac{d}{dx} [f \circ g] =\frac{d}{dx} f(g(x)) = \lim_{h \to 0} \frac{f(g(x+h)) - f(g(x))}{h} = \lim_{h \to 0} \frac{f(g(x)+h\,g'(x)) - f(g(x))}{h} = 
+	\]
+	\[
+	\lim_{h \to 0} \frac{f(g(x))+hf'(g(x))g'(x) - f(g(x))}{h} = \lim_{h \to 0} \frac{hf'(g(x))g'(x)}{h} = f'(g(x))g'(x) \Rightarrow
+	\frac{d}{dx} f(g(x))=f'(g(x))g'(x)
+	\]
+	\label{derivadas}
+	\subsection*{Dedução das derivadas}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx} c = \lim_{h \to 0} \frac{c - c}{h} = \lim_{h \to 0} \frac{0}{h} = 0$ para qualquer $c \in \mathbb{R}$.
+		\item $\displaystyle \frac{d}{dx} \sin x = \lim_{h \to 0} \frac{\sin (x + h) - \sin x}{h} = \lim_{h \to 0} \frac{\sin x\, \cos h + \cos x \,\sin h - \sin x}{h} = \sin x\,\lim_{h \to 0} \frac{\cos h - 1}{h} + \cos x\,\lim_{h \to 0} \frac{\sin h}{h}$\\\\
+		Apesar de o limite poder ser resolvido por l'hopital, como é necessário previamente definir a derivada de $\sin x$ (problema original), a solução utilizada será através de trigonometria e limites:\\\\
+		Tendo um círculo de raio 1, considerando uma reta que corte o círculo, formando um arco de ângulo $\theta$, e dessa mesma reta, forma-se um triângulo retângulo, igual ao da imagem:
+		
+		\begin{center}
+			\begin{tikzpicture}[scale=3]
+				% Círculo unitário
+				\draw (0,0) circle (1);
+				
+				% Eixos coordenados
+				\draw[->] (-1.2,0) -- (1.2,0) node[right] {$x$};
+				\draw[->] (0,-1.2) -- (0,1.2) node[above] {$y$};
+				
+				% Centro
+				\fill (0,0) circle (0.5pt) node[below left] {$O$};
+				
+				% Ângulo θ
+				\draw (0.3,0) arc (0:30:0.3);
+				\node at (15:0.45) {$\theta$};
+				
+				% Pontos importantes
+				\coordinate (O) at (0,0);
+				\coordinate (A) at (1,0);
+				\coordinate (P) at (cos{30}, sin{30});
+				\coordinate (T) at (1, tan{30});
+				
+				% Marca os pontos
+				\fill (cos{30}, 0) circle (0.5pt);
+				
+				\fill (P) circle (0.5pt); \node [above, left] at (cos{30}-0.05, sin{30}+0.05) {$P(\cos\theta,\sin\theta)$};
+				
+				% Segmento OP (raio)
+				\draw[thick] (O) -- (P) node[midway, above left] {$1$};
+				
+				% Segmento PT1
+				\draw (P) -- (T);
+				\draw [green] (T) -- (1,0);
+				\node [green, right] at (1,tan{30}/2) {$\tan \theta$};
+				
+				% Arco do círculo
+				\draw[blue, thick] (A) arc (0:30:1);
+				
+				% Altura do triângulo (linha vertical de P até o eixo x)
+				\draw[red] (P) -- (cos{30}, 0) node[midway, left] {$\sin\theta$};
+				
+				\draw [thin] (cos{30}, 0.07) -- (cos{30} - 0.07, 0.07) -- (cos{30} - 0.07, 0);
+				
+				\fill (cos{30}-0.035, 0.035) circle (0.25pt);
+				
+				% Anotações importantes
+				\node at (0.5, -0.1) {$\cos\theta$};
+				
+				\fill (0,1) circle (0.25pt) node [above right] {$(0,1)$};
+				
+				\fill (1,0) circle (0.25pt) node [below right] {$(1,0)$};
+			\end{tikzpicture}
+		\end{center}
+		Á área da seção circular pode ser calculada por $\displaystyle \frac{1}{2}\,r^2\,\theta$, e a área do triângulos menor e maior por $\displaystyle \frac{1}{2}\, \cos\theta\,\sin \theta$ e $\displaystyle \frac{1}{2}\,r\,\tan \theta$, respectivamente.\\\\
+		Para definir $\displaystyle \lim_{\theta \to 0} \frac{\sin \theta}{\theta}$:
+		\[
+		\frac{1}{2}\,\cos\theta\,\sin \theta \leq \frac{1}{2}\,r^2\,\theta \leq \frac{1}{2}\,r\,\tan \theta \Rightarrow 
+		\cos\theta \, \sin \theta  \leq \theta  \leq \dfrac{\sin \theta}{\cos \theta} \Rightarrow \cos\theta \leq \dfrac{\theta}{\sin \theta} \leq \dfrac{1}{\cos \theta} \Rightarrow \dfrac{1}{\cos \theta} \geq \dfrac{\sin \theta}{\theta} \geq \cos \theta \Rightarrow
+		\]
+		\[
+		\lim_{\theta \to 0} \cos \theta \leq \lim_{\theta \to 0} \dfrac{\sin \theta}{\theta} \leq \lim_{\theta \to 0} \dfrac{1}{\cos \theta} \Rightarrow 1 \leq  \lim_{\theta \to 0} \dfrac{\sin \theta}{\theta} \leq 1 \Rightarrow \lim_{\theta \to 0} \frac{\sin \theta}{\theta} = 1
+		\]
+		Para definir $\displaystyle \lim_{\theta \to 0} \frac{\cos \theta - 1}{\theta}$:
+		\[
+		\frac{\cos \theta - 1}{\theta} = \frac{\cos \theta - 1}{\theta} \frac{\cos \theta + 1}{\cos \theta + 1} = \frac{\cos^2 \theta - 1}{\theta(\cos \theta + 1)} = -\frac{\sin^2 \theta}{\theta(\cos \theta + 1)} = -\frac{\sin \theta}{\theta}\frac{\sin \theta}{\cos \theta + 1} \Rightarrow \lim_{\theta \to 0} \left[ -\frac{\sin \theta}{\theta}\frac{\sin \theta}{\cos \theta + 1} \right] =
+		\]
+		\[
+		-\lim_{\theta \to 0} \frac{\sin \theta}{\theta} \lim_{\theta \to 0} \frac{\sin \theta}{\cos \theta + 1} = -1\cdot\frac{0}{2}=0 \Rightarrow \lim_{\theta \to 0} \frac{\cos \theta - 1}{\theta} = 0
+		\]
+		Logo:
+		\[
+		\displaystyle \sin x\,\lim_{h \to 0} \frac{\cos h - 1}{h} + \cos x\,\lim_{h \to 0} \frac{\sin h}{h} = \sin x\cdot 0 + \cos x \cdot 1 = \cos x \Rightarrow \frac{d}{dx}\sin x = \cos x.
+		\]
+		\item $\displaystyle \frac{d}{dx} \cos x = \lim_{h \to 0} \frac{\cos (x + h) - \cos x}{h} = \lim_{h \to 0} \frac{\cos x\, \cos h + \sin x \,\sin h - \cos x}{h} = \lim_{h \to 0} \frac{\cos x \left( \cos h -1\right)}{h} - \lim_{h \to 0} \frac{\sin x \,\sin h}{h} = $
+		\[
+		\displaystyle \cos x \lim_{h \to 0} \frac{\cos h -1}{h} - \sin x \lim_{h \to 0} \frac{\sin h}{h} = \cos x \cdot 0 - \sin x \cdot 1 = -\sin x \Rightarrow \frac{d}{dx} \cos x = -\sin x
+		\]
+		\item $\displaystyle \frac{d}{dx} a^x = \lim_{h \to 0} \frac{a^{x+h} - a^x}{h} = \lim_{h \to 0} \frac{a^{x}a^{h} - a^x}{h} =  a^x\lim_{h \to 0}\frac{a^h-1}{h}$\\\\
+		Sabendo que $\displaystyle a^h = e^{\ln a^h} = e^{h\,\ln a}$. Sabendo que o polinômio de Taylor de $e^h$ é igual à $\displaystyle 1+h+\frac{h^2}{2!}+\frac{h^3}{3!}+\dots$, o de $e^{h\,\ln a}$ sendo então $\displaystyle 1+h\,\ln a+\frac{(h\,\ln a)^2}{2!}+\frac{(h\,\ln a)^3}{3!}+\dots$:
+		\[
+		\displaystyle a^x\lim_{h \to 0} \frac{\left( \displaystyle 1+h\,\ln a+\frac{(h\,\ln a)^2}{2!}+\frac{(h\,\ln a)^3}{3!}+\dots \right) - 1}{h} = a^x\lim_{h \to 0} \frac{ \displaystyle h\,\ln a +\frac{(h\,\ln a)^2}{2!}+\frac{(h\,\ln a)^3}{3!}+\dots}{h} = 
+		\]
+		\[
+		\displaystyle a^x\lim_{h \to 0} \left[\ln a +\frac{h\,\ln^2 a}{2!}+\frac{h^2 \ln^3 a}{3!}+\dots\right] = a^x \ln a \Rightarrow \frac{d}{dx} a^x = a^x \ln a.
+		\]
+		\textbf{Muito usada:} $\displaystyle \frac{d}{dx}e^x = e^x\ln e = e^x \cdot 1 = e^x$.
+		\item $\displaystyle \frac{d}{dx} \log_a x$, tendo função inversa igual a $f(x) = a^x \Rightarrow f'(x) = a^x\ln a$: $\displaystyle \frac{1}{f'(f^{-1}(x))} = \frac{1}{\displaystyle a^{\log_a x}\ln a}=\frac{1}{x\,\ln a}$.\\\\
+		\textbf{Muito usada:} $\displaystyle \frac{d}{dx}\ln x = \frac{1}{x\,\ln e} = \frac{1}{x \cdot 1} = \frac{1}{x}$.
+	\end{itemize}
+	
+	\subsubsection*{Regra do tombo:}
+	\begin{itemize}
+		\item $\displaystyle \frac{d}{dx}x^n = \lim_{h \to 0} \frac{(x+h)^n - x^n}{h}$. A partir da definição de função polinomial, usando Binômio de Newton, que é:
+		\[
+		(x+a)^n = \sum_{k=0}^{n} \binom{n}{k} x^k a^{n-k},\ n\neq 0 \text{, com } \binom{n}{k} = \frac{n!}{k!(n-k)!}
+		\]
+		Expandindo:
+		\[
+		\binom{n}{0}=\frac{n!}{0!(n-0)!}=\frac{n!}{n!}=1
+		\]
+		\[
+		\binom{n}{1}=\frac{n!}{1!(n-1)!}=\frac{n(n-1)!}{(n-1)!}=n \qquad 
+		\]
+		\[
+		\binom{n}{2}=\frac{n!}{2!(n-2)!}=\frac{n(n-1)(n-2)!}{2(n-2)!}=\frac{n(n-1)}{2}
+		\]
+		\[
+		\vdots
+		\]
+		\[
+		\binom{n}{n-2}=\frac{n!}{(n-2)!(n-(n-2))!}=\frac{n(n-1)(n-2)!}{2(n-2)!}=\frac{n(n-1)}{2}
+		\]
+		\[
+		\binom{n}{n-1}=\frac{n!}{(n-1)!(n-(n-1))!}=\frac{n(n-1)!}{(n-1)!}=n 
+		\]
+		\[
+		\binom{n}{n}=\frac{n!}{n!(n-n)!}=\frac{n!}{n!}=1
+		\]
+		Quando aplicado esse conceito na derivada:
+		\[
+		\lim_{h \to 0} \frac{(x+h)^n - x^n}{h} = \lim_{h \to 0} \frac{ \displaystyle \left[ \binom{n}{0}x^n + \binom{n}{1}x^{n-1}h + \binom{n}{2}x^{n-2}h^2 + \cdots + \binom{n}{n}h^n \right] - x^n }{h}
+		\]
+		\[
+		\lim_{h \to 0} \frac{\displaystyle x^n +\binom{n}{1}x^{n-1}h + \binom{n}{2}x^{n-2}h^2 + \cdots + \binom{n}{n}h^n -x^n}{h} = 	\lim_{h \to 0} \frac{\displaystyle \binom{n}{1}x^{n-1}h + \binom{n}{2}x^{n-2}h^2 + \cdots + \binom{n}{n}h^n}{h}
+		\]
+		\[
+		\lim_{h \to 0} \left[ \binom{n}{1}x^{n-1} + \binom{n}{2}x^{n-2}h + \cdots + \binom{n}{n}h^{n-1} \right] = \binom{n}{1}x^{n-1} = n\, x^{n-1} \Rightarrow \frac{d}{dx}x^n = n\, x^{n-1},\  n \in \mathbb{R}^*.
+		\]
+	\end{itemize}
+	\label{integrais definidas}
+	\subsection*{Dedução do teorema fundamental do cálculo}
+	\subsubsection*{Teorema do valor médio para integrais:}
+	Dada uma integral definida entre dois pontos $a$ e $b$ de uma $f$ contínua, a área calculada pode ser igualada à um retângulo $f(c) \cdot (b-a)$, $c\in[a,b]$.
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = middle,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				xmin = -2, xmax = 6,
+				ymin = -12, ymax = 14,
+				samples = 100,
+				width = 14cm,
+				height = 8cm,
+				xtick={10},
+				ytick={30},
+				]
+				
+				\addplot[
+				red!40,
+				fill=red!40,
+				domain=1:4
+				]
+				{-2.75} \closedcycle;
+				
+				\addplot[
+				gray!40,
+				fill=gray!40,
+				domain=1:4
+				]
+				{(x)*(x-2)*(x-5)} \closedcycle;
+				
+				\addplot[
+				red!40!gray!40,
+				fill=red!40!gray!40,
+				domain=2:2.44025
+				]
+				{(x)*(x-2)*(x-5)} \closedcycle;
+				
+				\addplot[
+				red!40!gray!40,
+				fill=red!40!gray!40,
+				domain=2.44025:4
+				]
+				{-2.75} \closedcycle;
+				
+				\addplot[thick, domain=-2:7] 
+				{(x)*(x-2)*(x-5)};
+				
+				\node [above] at (0.88,4.5) {$\displaystyle f(x)$};
+				
+				\draw (1,0) -- (1,4);
+				
+				\draw (4,0) -- (4,-8);
+				
+				\draw (1,0) -- (4,0);
+				
+				\fill[black] (1,0) circle (2pt);
+				
+				\fill[black] (4,0) circle (2pt);
+				
+				\node [below left] at (1,0) {$a$};
+				
+				\node [above] at (4,0) {$b$};
+				
+				\draw (1,0) -- (1,-2.75);
+				
+				\draw (1,-2.75) -- (4,-2.75);
+				
+				\draw [dashed] (0,-2.75) -- (1,-2.75);
+				
+				\draw [dashed] (2.44025,-2.75) -- (2.44025,0);
+				
+				\fill[black] (0,-2.75) circle (2pt);
+				
+				\fill[black] (2.44025,0) circle (2pt);
+				
+				\node [above] at (2.44025,0) {$c$};
+				
+				\node [below right] at (0,-2.75) {$f(c)$};
+
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	Definindo $\displaystyle G(x) = \int_{a}^{x} f(x)\,dx$ (pode ser entendida como a área a partir de $a$):
+	\[
+	G'(x) = \lim_{h \to 0} \frac{G(x+h)-G(x)}{h} = \lim_{h \to 0} \dfrac{\displaystyle \int_{a}^{x+h} f(x)\,dx - \int_{a}^{x} f(x)\,dx}{h}
+	\]
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				axis lines = middle,
+				xlabel = \(x\),
+				ylabel = \(y\),
+				xmin = 0, xmax = 7,
+				ymin = -14, ymax = 20,
+				samples = 100,
+				width = 12cm,
+				height = 8cm,
+				xtick={10},
+				ytick={30},
+				]
+				
+				% Área azul: [1.5, 3]
+				\addplot[
+				blue!40,
+				fill=blue!40,
+				domain=1.5:3
+				]
+				{(x-1)*(x-2)*(x-4)*(x-6)} \closedcycle;
+				
+				\node [blue, left] at (3,10) {$\displaystyle \int_{a}^{x} f(x)\,dx$}; 
+				
+				% Área vermelha: [3, 5]
+				\addplot[
+				red!40,
+				fill=red!40,
+				domain=3:5
+				]
+				{(x-1)*(x-2)*(x-4)*(x-6)} \closedcycle;
+				
+				\node [red, right] at (3,10) {$\displaystyle \int_{x}^{x+h} f(x)\,dx$};
+				
+				\node [below] at (3,-1.5) {$\displaystyle \int_{a}^{x+h} f(x)\,dx$};
+				
+				\addplot[thick, domain=0:7] 
+				{(x-1)*(x-2)*(x-4)*(x-6)};
+				
+				\node at (0.9,18) {$\displaystyle f(x)$};
+				
+				\draw (5,-12) -- (5,0);
+				
+				\draw (5,0) -- (1.5,0);
+				
+				\draw (1.5,0) -- (1.5,-2.8125);
+				
+				\fill[black] (1.5,0) circle (2pt);
+				
+				\fill[black] (3,0) circle (2pt);
+				
+				\fill[black] (5,0) circle (2pt);
+				
+				\node [above] at (1.5,0) {$a$};
+				
+				\node [below] at (3,0) {$x$};
+				
+				\node [above] at (5,0) {$x+h$};
+				
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+	Como visto pela imagem:
+	\[
+	\displaystyle \int_{a}^{x+h} f(x)\,dx - \int_{a}^{x} f(x)\,dx = \int_{x}^{x+h} f(x)\,dx \Rightarrow G'(x) = \lim_{h \to 0} \dfrac{\displaystyle \int_{x}^{x+h} f(x)\,dx}{h}
+	\]
+	De acordo com o \textbf{teorema do valor médio para integrais}:
+	\[
+	\displaystyle \int_{x}^{x+h} f(x)\,dx = f(c)\,h,\ c \in [x, x+h] \Rightarrow G'(x) = \lim_{h \to 0} \frac{f(c)\,h}{h}=\lim_{h \to 0}f(c)
+	\]
+	Como quando $h \to 0$, o intervalo em que está contido $c$ passa a ser $x \le c \le x \Rightarrow c = x$. Dessa maneira, $G'(x) = f(x)$.\\\\
+	Sendo $F(x)$ a primitiva de $f(x)$, tem-se que:
+	\[
+	\displaystyle \frac{d}{dx}[F(x)-G(x)] = f(x)-f(x) = 0 \Rightarrow F(x)-G(x) = c \Rightarrow G(x) = F(x) - c
+	\]
+	Como::
+	\[
+	G(a) = \int_a^a f(x)\,dx = 0 \Rightarrow G(a) = F(a) - c \Rightarrow F(a) - c = 0 \Rightarrow c = F(a) \Rightarrow G(x) = F(x) - F(a)
+	\]
+	Definindo um valor $b$ qualquer onde $b \ge a$, tem-se: $\displaystyle G(b) = F(b) - F(a) \Rightarrow \int_a^b f(x)\,dx = F(b) - F(a)$
+	
+	\section*{Fontes}
+	\begin{enumerate}
+		\item STEWART, James. Cálculo - Volume 1. 7. ed. São Paulo: Cengage Learning, 2013.
+		\item THOMAS, George B.; WEIR, Maurice D.; HASS, Joel. Cálculo Volume 1. 12. ed. São Paulo: Pearson, 2012.
+		\item LIMA, Elon Lages. Análise Real volume 1. 8. ed. Rio de Janeiro: IMPA, 2006.
+		\item TAKHE. Cálculo 1: Aulas e Exercícios Resolvidos. [YouTube], 2023. Disponível em:\\ \url{https://www.youtube.com/playlist?list=PLmAu9dltGZtp1apl5ib_uL7UkP4fDwy4m}. Acesso em: 10 set. 2025.
+		\item BARROS, Tatiana Leal. Disciplina: Cálculo com Funções de Uma Variável Real. Curso de graduação em Engenharia de Computação – Centro Federal de Educação Tecnológica de Minas Gerais (CEFET-MG), 2024.
+		\item CAMARGO JUNIOR, Fausto de. Disciplina: Integração e séries. Curso de graduação em Engenharia de Computação – CEFET-MG, 2024.
+	\end{enumerate}
+\end{document}
+
